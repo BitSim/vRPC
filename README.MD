@@ -64,7 +64,6 @@ RpcServerBootstrap.start()
 ```
 +  配置文件`vrpc.yml`或`vrpc.properties`配置格式
 ```yml
-#服务端
 registry:
   type: zookeeper  #指定注册中心的类型
   zookeeper:       #注册中心地址
@@ -76,15 +75,6 @@ serializer:
 server:
   port: 8888  #TCP服务端口
   host: localhost #TCP服务地址
-
-#客户端
-serializer:
-  type: json
-
-server:
-  port: 8888
-  host: localhost
-
 ```
 ## 支持SPI
 + 配置目录
