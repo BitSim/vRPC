@@ -2,66 +2,63 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.20'
     id "maven-publish"
     id 'java-library'
-    id 'org.jreleaser' version '1.15.0'
+    id 'org.jreleaser' version '1.13.1'
 }
 
 repositories {
-    // 阿里云公共仓库
     maven { url "https://maven.aliyun.com/repository/public" }
-    // 阿里云 Gradle 插件仓库
     maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-
+    mavenCentral()
 }
-// 使用 extra 定义变量
+
 ext {
     projectGroupId = System.getenv("MAVEN_GROUP_ID") ?: "io.github.bitsim"
     projectArtifactId = System.getenv("MAVEN_ARTIFACT_ID") ?: "vrpc-core"
     projectVersion = System.getenv("MAVEN_VERSION") ?: "1.0.0-SNAPSHOT"
 }
-
+group = projectGroupId
+version = projectVersion
 
 dependencies {
-    implementation ('io.github.oshai:kotlin-logging-jvm:7.0.0')
-    implementation("org.slf4j:slf4j-simple:2.0.16")
-    implementation("io.vertx:vertx-web:4.5.11")
-    implementation("io.vertx:vertx-zookeeper:4.5.11")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.1")
-    implementation("org.apache.curator:curator-x-discovery:5.7.1")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
-    compileOnly("org.projectlombok:lombok:1.18.34")
+    implementation 'io.github.oshai:kotlin-logging-jvm:7.0.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+    implementation 'io.vertx:vertx-web:4.5.11'
+    implementation 'io.vertx:vertx-zookeeper:4.5.11'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
+    implementation 'org.apache.curator:curator-x-discovery:5.7.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0'
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:2.0.21'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.24"
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.9.24'
 }
 
 test {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(21)
 }
-
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = projectGroupId
             artifactId = projectArtifactId
-            from(components["java"])
+            from components.java
             pom {
                 name.set(projectArtifactId)
                 description.set("一个基于vert.x框架,以kotlin为主要开发语言的轻量级高并发rpc框架")
                 inceptionYear.set("2024")
                 developers {
                     developer {
-                        // 开发者信息
                         id.set("bitsim")
                         name.set("bitsim")
                         email.set("gomorebug@gmail.com")
                     }
                 }
-                // 协议信息
                 licenses {
                     license {
                         name.set("MIT")
@@ -69,7 +66,6 @@ publishing {
                         distribution.set("repo")
                     }
                 }
-                // 源代码仓库信息
                 scm {
                     url.set("https://github.com/BitSim/vRPC")
                     connection.set("scm:git:git@github.com:BitSim/vRPC.git")
@@ -85,22 +81,18 @@ publishing {
     }
 }
 
-
 java {
     withJavadocJar()
     withSourcesJar()
 }
+
 jreleaser {
     signing {
         active = 'ALWAYS'
         armored = true
-        mode = 'FILE'
-        publicKey = 'E:\\Program\\public.pgp'
-        secretKey = 'E:\\Program\\secret.pgp'
     }
     deploy {
         maven {
-            /* Portal Publisher API */
             mavenCentral {
                 sonatype {
                     active = 'ALWAYS'
@@ -108,8 +100,6 @@ jreleaser {
                     stagingRepository('build/staging-deploy')
                 }
             }
-
         }
     }
-
 }
