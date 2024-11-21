@@ -8,8 +8,7 @@ import java.util.*
 
 /**
  *@author  BitSim
- *@version  v1.0.0
-
+ *@version  v1.0.1
  **/
 object Config{
     private val properties: Properties = Properties()
@@ -18,18 +17,17 @@ object Config{
         var configLoaded = false
 
         // 读取 properties 文件
-        val propertiesFile = File("src/main/resources/vrpc.properties")
-        if (propertiesFile.exists()) {
-            FileInputStream(propertiesFile).use { properties.load(it) }
+        val propertiesFile = ClassLoader.getSystemClassLoader().getResource("vrpc.properties")
+        if (propertiesFile != null) {
+            val inputStream = FileInputStream(propertiesFile.file)
+            properties.load(inputStream)
             configLoaded = true
         }
 
         // 读取 yaml 文件
-        val yamlFile = File("src/main/resources/vrpc.yml")
-        if (yamlFile.exists()) {
-            @Suppress("UNCHECKED_CAST")
-            val yamlConfig: Map<String, Any> =
-                yamlMapper.readValue(yamlFile, Map::class.java) as Map<String, Any>
+        val yamlFile = ClassLoader.getSystemClassLoader().getResource("vrpc.yml")
+        if (yamlFile != null) {
+            val yamlConfig = yamlMapper.readValue(File(yamlFile.file), Map::class.java) as Map<String, Any>
             flattenYamlConfig(yamlConfig, "")
             configLoaded = true
         }

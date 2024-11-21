@@ -1,6 +1,21 @@
 
 ## 项目简介
     一个基于vert.x框架,以kotlin为主要开发语言的轻量级高并发rpc框架
+## 引入依赖
++ gradle
+```groovy
+    implementation "io.github.bitsim:vrpc-core:1.0.1"
+```
++ maven
+```kotlin
+
+<dependency>
+    <groupId>io.github.bitsim</groupId>
+    <artifactId>vrpc-core</artifactId>
+    <version>1.0.1</version>
+</dependency>
+
+```
 ## 待完成
 - [ ] 负载均衡策略
 - [ ] 超时重试
