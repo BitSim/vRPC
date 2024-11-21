@@ -1,0 +1,1 @@
+zookeeper=com.bitsim.vrpc.registry.ZookeeperRegistry

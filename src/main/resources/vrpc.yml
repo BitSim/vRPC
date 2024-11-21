@@ -1,0 +1,11 @@
+registry:
+  type: zookeeper
+  zookeeper:
+    address: localhost:2181
+
+serializer:
+  type: json
+
+server:
+  port: 8888
+  host: localhost
